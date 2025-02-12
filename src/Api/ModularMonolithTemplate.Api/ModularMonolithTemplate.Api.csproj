@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\aspire\ModularMonolithTemplate.Aspire\ModularMonolithTemplate.Aspire.ServiceDefaults\ModularMonolithTemplate.Aspire.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\Common\ModularMonolithTemplate.Common.Application\ModularMonolithTemplate.Common.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Products\ModularMonolithTemplate.Modules.Products.Infrastructure\ModularMonolithTemplate.Modules.Products.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

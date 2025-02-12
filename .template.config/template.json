@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Lucas Constantino",
+  "classifications": [
+    "API",
+    "Web",
+    "C#"
+  ],
+  "identity": "ModularMonolith.Template",
+  "name": "Modular Monolith Template",
+  "shortName": "modularmonolith-template",
+  "sourceName": "ModularMonolithTemplate",
+  "defaultName": "ModularMonolithProject",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "lowerCaseProjectName": {
+      "type": "generated",
+      "generator": "casing",
+      "parameters": {
+        "source": "sourceName",
+        "toLower": true
+      },
+      "replaces": "modularmonolithtemplate"
+    }
+  }
+}

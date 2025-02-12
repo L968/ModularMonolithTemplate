@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\ModularMonolithTemplate.Common.Infrastructure\ModularMonolithTemplate.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\ModularMonolithTemplate.Modules.Products.Application\ModularMonolithTemplate.Modules.Products.Application.csproj" />
+    <ProjectReference Include="..\ModularMonolithTemplate.Modules.Products.Presentation\ModularMonolithTemplate.Modules.Products.Presentation.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Database\Migrations\" />
+  </ItemGroup>
+</Project>
