@@ -1,0 +1,77 @@
+﻿using Microsoft.Extensions.Logging;
+using ModularMonolithTemplate.Common.Application.Abstractions;
+using ModularMonolithTemplate.Common.Domain.Exceptions;
+using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.UpdateProduct;
+using ModularMonolithTemplate.Modules.Products.Domain.Products;
+using Moq;
+
+namespace ModularMonolithTemplate.Modules.Products.UnitTests.Products.Commands;
+
+public class UpdateProductTests
+{
+    private readonly Mock<IProductRepository> _repositoryMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<ILogger<UpdateProductHandler>> _loggerMock;
+    private readonly UpdateProductHandler _handler;
+
+    public UpdateProductTests()
+    {
+        _repositoryMock = new Mock<IProductRepository>();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _loggerMock = new Mock<ILogger<UpdateProductHandler>>();
+
+        _handler = new UpdateProductHandler(_repositoryMock.Object, _unitOfWorkMock.Object, _loggerMock.Object);
+    }
+
+    [Fact]
+    public async Task WhenProductExists_ShouldUpdateProduct()
+    {
+        // Arrange
+        var existingProduct = new Product(
+            name: "Old Product",
+            price: 100m
+        );
+
+        var command = new UpdateProductCommand
+        {
+            Id = existingProduct.Id,
+            Name = "Updated Product",
+            Price = 150m
+        };
+
+        _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(existingProduct);
+
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        _repositoryMock.Verify(x => x.Update(existingProduct), Times.Once);
+        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+
+        Assert.Equal(command.Name, existingProduct.Name);
+        Assert.Equal(150m, existingProduct.Price);
+    }
+
+    [Fact]
+    public async Task WhenProductDoesNotExist_ShouldThrowAppException()
+    {
+        // Arrange
+        var command = new UpdateProductCommand
+        {
+            Id = Guid.Empty,
+            Name = "Nonexistent Product",
+            Price = 100m
+        };
+
+        _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
+                       .ReturnsAsync((Product?)null);
+
+        // Act & Assert
+        AppException exception = await Assert.ThrowsAsync<AppException>(() => _handler.Handle(command, CancellationToken.None));
+        Assert.Equal($"No Product found with Id {command.Id}", exception.Message);
+
+        _repositoryMock.Verify(x => x.Update(It.IsAny<Product>()), Times.Never);
+        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+}

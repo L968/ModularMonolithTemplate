@@ -12,8 +12,8 @@ builder.AddProject<Projects.ModularMonolithTemplate_Api>("modularmonolithtemplat
     .WithReference(mysqldb)
     .WaitFor(mysqldb);
 
-builder.AddProject<Projects.ModularMonolithTemplate_MigrationService>("modularmonolithtemplate-migrationservice")
-    .WithReference(mysqldb)
-    .WaitFor(mysqldb);
+//builder.AddProject<Projects.ModularMonolithTemplate_MigrationService>("modularmonolithtemplate-migrationservice")
+//    .WithReference(mysqldb)
+//    .WaitFor(mysqldb)
 
 await builder.Build().RunAsync();

@@ -1,5 +1,6 @@
 ﻿using ModularMonolithTemplate.Common.Application.Abstractions;
 using ModularMonolithTemplate.Common.Domain.Exceptions;
+using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Products.Commands.UpdateProduct;
 
@@ -15,7 +16,7 @@ internal sealed class UpdateProductHandler(
 
         if (product is null)
         {
-            throw new AppException($"No Product found with Id {request.Id}");
+            throw new AppException(ProductErrors.ProductNotFound(request.Id));
         }
 
         product.Update(

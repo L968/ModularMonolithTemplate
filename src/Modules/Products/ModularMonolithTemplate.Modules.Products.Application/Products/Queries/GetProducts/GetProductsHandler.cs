@@ -1,4 +1,6 @@
-﻿namespace ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProducts;
+﻿using ModularMonolithTemplate.Modules.Products.Domain.Products;
+
+namespace ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProducts;
 
 internal sealed class GetProductsHandler(
     IProductRepository repository,

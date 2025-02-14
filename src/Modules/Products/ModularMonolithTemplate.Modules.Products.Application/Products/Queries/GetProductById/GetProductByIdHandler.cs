@@ -1,4 +1,5 @@
 ﻿using ModularMonolithTemplate.Common.Domain.Exceptions;
+using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProductById;
 
@@ -13,7 +14,7 @@ internal sealed class GetProductByIdHandler(
 
         if (product is null)
         {
-            throw new AppException($"Product with Id {request.Id} not found");
+            throw new AppException(ProductErrors.ProductNotFound(request.Id));
         }
 
         logger.LogInformation("Successfully retrieved  Product with Id {Id}", request.Id);

@@ -1,5 +1,6 @@
 ﻿using ModularMonolithTemplate.Common.Application.Abstractions;
 using ModularMonolithTemplate.Common.Domain.Exceptions;
+using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Products.Commands.CreateProduct;
 
@@ -15,7 +16,7 @@ internal sealed class CreateProductHandler(
 
         if (existingProduct is not null)
         {
-            throw new AppException($"A product with name \"{request.Name}\" already exists");
+            throw new AppException(ProductErrors.ProductAlreadyExists(request.Name));
         }
 
         var product = new Product(

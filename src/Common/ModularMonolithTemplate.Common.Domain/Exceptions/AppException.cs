@@ -1,3 +1,6 @@
 ﻿namespace ModularMonolithTemplate.Common.Domain.Exceptions;
 
-public class AppException(string message) : Exception(message);
+public class AppException(Error error) : Exception(error.Message)
+{
+    public ErrorType ErrorType { get; } = error.ErrorType;
+}

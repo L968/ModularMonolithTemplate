@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Modules.Products.Domain;
+﻿namespace ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 public sealed class Product
 {

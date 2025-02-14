@@ -1,9 +1,11 @@
 using System.Reflection;
 using ModularMonolithTemplate.Api.Extensions;
 using ModularMonolithTemplate.Api.Middleware;
+using ModularMonolithTemplate.Aspire.ServiceDefaults;
 using ModularMonolithTemplate.Common.Application;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
 using ModularMonolithTemplate.Modules.Products.Infrastructure;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +25,13 @@ builder.Services.AddProductsModule(builder.Configuration);
 
 builder.Services.AddDocumentation();
 
+builder.Host.AddSerilogLogging();
+
 WebApplication app = builder.Build();
 
 app.MapDefaultEndpoints();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
