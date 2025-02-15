@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithTemplate.Common.Application.Abstractions;
+using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
+using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Infrastructure.Database;
 
 internal sealed class ProductsDbContext(DbContextOptions<ProductsDbContext> options) : DbContext(options), IUnitOfWork
 {
+    internal DbSet<Product> Products { get; set; }
+
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.Properties<decimal>()

@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Common.Application.Abstractions;
+﻿namespace ModularMonolithTemplate.Modules.Products.Application.Abstractions;
 
 public interface IUnitOfWork
 {

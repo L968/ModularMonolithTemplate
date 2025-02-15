@@ -2,7 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
+using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
+using ModularMonolithTemplate.Modules.Products.Domain.Products;
 using ModularMonolithTemplate.Modules.Products.Infrastructure.Database;
+using ModularMonolithTemplate.Modules.Products.Infrastructure.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Infrastructure;
 
@@ -20,6 +23,7 @@ public static class ProductsModule
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         string connectionString = configuration.GetConnectionString("Database");
+
         var serverVersion = ServerVersion.AutoDetect(connectionString);
 
         services.AddDbContext<ProductsDbContext>(options =>
@@ -30,5 +34,9 @@ public static class ProductsModule
                     mysqlOptions => mysqlOptions.MigrationsAssembly(typeof(ProductsDbContext).Assembly.FullName)
                 )
         );
+
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ProductsDbContext>());
+
+        services.AddScoped<IProductRepository, ProductRepository>();
     }
 }
