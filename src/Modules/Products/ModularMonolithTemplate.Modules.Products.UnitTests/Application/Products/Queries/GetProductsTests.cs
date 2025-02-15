@@ -3,7 +3,7 @@ using ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetP
 using ModularMonolithTemplate.Modules.Products.Domain.Products;
 using Moq;
 
-namespace ModularMonolithTemplate.Modules.Products.UnitTests.Products.Queries;
+namespace ModularMonolithTemplate.Modules.Products.UnitTests.Application.Products.Queries;
 
 public class GetProductsTests
 {

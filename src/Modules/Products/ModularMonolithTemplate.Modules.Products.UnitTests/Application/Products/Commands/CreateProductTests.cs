@@ -4,7 +4,7 @@ using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.Cre
 using ModularMonolithTemplate.Modules.Products.Domain.Products;
 using Moq;
 
-namespace ModularMonolithTemplate.Modules.Products.UnitTests.Products.Commands;
+namespace ModularMonolithTemplate.Modules.Products.UnitTests.Application.Products.Commands;
 
 public class CreateProductTests
 {

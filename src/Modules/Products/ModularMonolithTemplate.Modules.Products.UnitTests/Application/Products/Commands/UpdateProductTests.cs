@@ -1,37 +1,42 @@
 ﻿using Microsoft.Extensions.Logging;
 using ModularMonolithTemplate.Common.Domain.Exceptions;
 using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
-using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.DeleteProduct;
+using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.UpdateProduct;
 using ModularMonolithTemplate.Modules.Products.Domain.Products;
 using Moq;
 
-namespace ModularMonolithTemplate.Modules.Products.UnitTests.Products.Commands;
+namespace ModularMonolithTemplate.Modules.Products.UnitTests.Application.Products.Commands;
 
-public class DeleteProductTests
+public class UpdateProductTests
 {
     private readonly Mock<IProductRepository> _repositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly DeleteProductHandler _handler;
+    private readonly UpdateProductHandler _handler;
 
-    public DeleteProductTests()
+    public UpdateProductTests()
     {
         _repositoryMock = new Mock<IProductRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        var loggerMock = new Mock<ILogger<DeleteProductHandler>>();
+        var loggerMock = new Mock<ILogger<UpdateProductHandler>>();
 
-        _handler = new DeleteProductHandler(_repositoryMock.Object, _unitOfWorkMock.Object, loggerMock.Object);
+        _handler = new UpdateProductHandler(_repositoryMock.Object, _unitOfWorkMock.Object, loggerMock.Object);
     }
 
     [Fact]
-    public async Task WhenProductExists_ShouldDeleteProduct()
+    public async Task WhenProductExists_ShouldUpdateProduct()
     {
         // Arrange
         var existingProduct = new Product(
-            name: "Product to Delete",
+            name: "Old Product",
             price: 100m
         );
 
-        var command = new DeleteProductCommand(Id: existingProduct.Id);
+        var command = new UpdateProductCommand
+        {
+            Id = existingProduct.Id,
+            Name = "Updated Product",
+            Price = 150m
+        };
 
         _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(existingProduct);
@@ -40,15 +45,23 @@ public class DeleteProductTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _repositoryMock.Verify(x => x.Delete(existingProduct), Times.Once);
+        _repositoryMock.Verify(x => x.Update(existingProduct), Times.Once);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+
+        Assert.Equal(command.Name, existingProduct.Name);
+        Assert.Equal(150m, existingProduct.Price);
     }
 
     [Fact]
     public async Task WhenProductDoesNotExist_ShouldThrowAppException()
     {
         // Arrange
-        var command = new DeleteProductCommand(Id: Guid.Empty);
+        var command = new UpdateProductCommand
+        {
+            Id = Guid.Empty,
+            Name = "Nonexistent Product",
+            Price = 100m
+        };
 
         _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
                        .ReturnsAsync((Product?)null);
@@ -57,7 +70,7 @@ public class DeleteProductTests
         AppException exception = await Assert.ThrowsAsync<AppException>(() => _handler.Handle(command, CancellationToken.None));
         Assert.Equal(ProductErrors.ProductNotFound(command.Id).Message, exception.Message);
 
-        _repositoryMock.Verify(x => x.Delete(It.IsAny<Product>()), Times.Never);
+        _repositoryMock.Verify(x => x.Update(It.IsAny<Product>()), Times.Never);
         _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }
