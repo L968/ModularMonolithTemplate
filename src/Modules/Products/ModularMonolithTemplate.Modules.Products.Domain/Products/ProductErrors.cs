@@ -1,4 +1,4 @@
-﻿using ModularMonolithTemplate.Common.Domain.Exceptions;
+﻿using ModularMonolithTemplate.Common.Domain;
 
 namespace ModularMonolithTemplate.Modules.Products.Domain.Products;
 

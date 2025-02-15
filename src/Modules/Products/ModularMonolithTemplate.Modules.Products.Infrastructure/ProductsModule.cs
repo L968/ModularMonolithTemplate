@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModularMonolithTemplate.Common.Infrastructure.Extensions;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
 using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
 using ModularMonolithTemplate.Modules.Products.Domain.Products;
@@ -15,14 +16,14 @@ public static class ProductsModule
     {
         services.AddInfrastructure(configuration);
 
-        services.AddEndpoints(Application.AssemblyReference.Assembly);
+        services.AddEndpoints(Presentation.AssemblyReference.Assembly);
 
         return services;
     }
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        string connectionString = configuration.GetConnectionString("Database");
+        string connectionString = configuration.GetConnectionStringOrThrow("modularmonolithtemplate-mysqldb");
 
         var serverVersion = ServerVersion.AutoDetect(connectionString);
 

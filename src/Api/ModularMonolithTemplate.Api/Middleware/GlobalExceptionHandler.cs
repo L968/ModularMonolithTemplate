@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using ModularMonolithTemplate.Common.Domain;
 using ModularMonolithTemplate.Common.Domain.Exceptions;
 
 namespace ModularMonolithTemplate.Api.Middleware;

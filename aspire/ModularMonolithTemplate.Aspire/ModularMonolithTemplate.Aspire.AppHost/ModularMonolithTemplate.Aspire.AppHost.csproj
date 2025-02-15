@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Api\ModularMonolithTemplate.Api\ModularMonolithTemplate.Api.csproj" />
+    <ProjectReference Include="..\..\..\src\Modules\Products\ModularMonolithTemplate.Modules.Products.MigrationService\ModularMonolithTemplate.Modules.Products.MigrationService.csproj" />
   </ItemGroup>
 
 </Project>

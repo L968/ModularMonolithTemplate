@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <ItemGroup>
+	  <PackageReference Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\aspire\ModularMonolithTemplate.Aspire\ModularMonolithTemplate.Aspire.ServiceDefaults\ModularMonolithTemplate.Aspire.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\ModularMonolithTemplate.Modules.Products.Infrastructure\ModularMonolithTemplate.Modules.Products.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

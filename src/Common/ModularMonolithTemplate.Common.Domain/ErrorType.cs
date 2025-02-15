@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Common.Domain.Exceptions;
+﻿namespace ModularMonolithTemplate.Common.Domain;
 
 public enum ErrorType
 {

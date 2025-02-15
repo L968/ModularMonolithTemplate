@@ -13,8 +13,6 @@ builder.AddServiceDefaults();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-builder.Services.AddOpenApi();
-
 Assembly[] moduleApplicationAssemblies = [
     ModularMonolithTemplate.Modules.Products.Application.AssemblyReference.Assembly,
 ];
@@ -23,15 +21,17 @@ builder.Services.AddApplication(moduleApplicationAssemblies);
 
 builder.Services.AddProductsModule(builder.Configuration);
 
-builder.Services.AddDocumentation();
+builder.Services.AddOpenApi();
 
 builder.Host.AddSerilogLogging();
 
 WebApplication app = builder.Build();
 
+app.UseSerilogRequestLogging();
+
 app.MapDefaultEndpoints();
 
-app.UseSerilogRequestLogging();
+app.MapEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
@@ -41,9 +41,5 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(o => { });
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapEndpoints();
 
 await app.RunAsync();
