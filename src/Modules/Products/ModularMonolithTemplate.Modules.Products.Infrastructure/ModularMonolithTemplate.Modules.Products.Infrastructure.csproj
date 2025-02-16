@@ -4,8 +4,4 @@
     <ProjectReference Include="..\ModularMonolithTemplate.Modules.Products.Application\ModularMonolithTemplate.Modules.Products.Application.csproj" />
     <ProjectReference Include="..\ModularMonolithTemplate.Modules.Products.Presentation\ModularMonolithTemplate.Modules.Products.Presentation.csproj" />
   </ItemGroup>
-
-	<ItemGroup>
-		<InternalsVisibleTo Include="ModularMonolithTemplate.Modules.Products.MigrationService" />
-	</ItemGroup>
 </Project>
