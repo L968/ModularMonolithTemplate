@@ -1,5 +1,4 @@
-﻿using ModularMonolithTemplate.Common.Domain.Exceptions;
-using ModularMonolithTemplate.Modules.Products.Domain.Products;
+﻿using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProductById;
 
