@@ -4,9 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ModularMonolithTemplate.Common.Infrastructure.Extensions;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
 using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
-using ModularMonolithTemplate.Modules.Products.Domain.Products;
 using ModularMonolithTemplate.Modules.Products.Infrastructure.Database;
-using ModularMonolithTemplate.Modules.Products.Infrastructure.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Infrastructure;
 
@@ -36,8 +34,6 @@ public static class ProductsModule
                 )
         );
 
-        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ProductsDbContext>());
-
-        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductsDbContext>(sp => sp.GetRequiredService<ProductsDbContext>());
     }
 }

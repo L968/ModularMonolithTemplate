@@ -4,9 +4,9 @@ using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Infrastructure.Database;
 
-public sealed class ProductsDbContext(DbContextOptions<ProductsDbContext> options) : DbContext(options), IUnitOfWork
+public sealed class ProductsDbContext(DbContextOptions<ProductsDbContext> options) : DbContext(options), IProductsDbContext
 {
-    internal DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {

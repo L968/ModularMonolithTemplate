@@ -1,19 +1,17 @@
-﻿using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
-using ModularMonolithTemplate.Modules.Products.Domain.Products;
+﻿using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Products.Commands.CreateProduct;
 
 internal sealed class CreateProductHandler(
-    IProductRepository repository,
-    IUnitOfWork unitOfWork,
+    IProductsDbContext dbContext,
     ILogger<CreateProductHandler> logger
-    ) : IRequestHandler<CreateProductCommand, CreateProductResponse>
+) : IRequestHandler<CreateProductCommand, CreateProductResponse>
 {
     public async Task<CreateProductResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        Product existingProduct = await repository.GetByNameAsync(request.Name, cancellationToken);
+        bool existingProduct = await dbContext.Products.AnyAsync(p => p.Name == request.Name, cancellationToken);
 
-        if (existingProduct is not null)
+        if (existingProduct)
         {
             throw new AppException(ProductErrors.ProductAlreadyExists(request.Name));
         }
@@ -23,8 +21,8 @@ internal sealed class CreateProductHandler(
             request.Price
         );
 
-        repository.Create(product);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        dbContext.Products.Add(product);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Successfully created {@Product}", product);
 

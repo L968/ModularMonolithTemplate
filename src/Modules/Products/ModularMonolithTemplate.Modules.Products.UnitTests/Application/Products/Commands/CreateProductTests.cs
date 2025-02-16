@@ -1,24 +1,17 @@
-﻿using Microsoft.Extensions.Logging;
-using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
-using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.CreateProduct;
-using ModularMonolithTemplate.Modules.Products.Domain.Products;
-using Moq;
+﻿using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.CreateProduct;
 
 namespace ModularMonolithTemplate.Modules.Products.UnitTests.Application.Products.Commands;
 
-public class CreateProductTests
+public class CreateProductTests : IClassFixture<ProductsDbContextFixture>
 {
-    private readonly Mock<IProductRepository> _repositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly CreateProductHandler _handler;
 
-    public CreateProductTests()
+    public CreateProductTests(ProductsDbContextFixture fixture)
     {
-        _repositoryMock = new Mock<IProductRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        ProductsDbContext dbContext = fixture.DbContext;
         var loggerMock = new Mock<ILogger<CreateProductHandler>>();
 
-        _handler = new CreateProductHandler(_repositoryMock.Object, _unitOfWorkMock.Object, loggerMock.Object);
+        _handler = new CreateProductHandler(dbContext, loggerMock.Object);
     }
 
     [Fact]
@@ -37,7 +30,5 @@ public class CreateProductTests
         Assert.NotNull(result);
         Assert.Equal("New Product", result.Name);
         Assert.Equal(150m, result.Price);
-        _repositoryMock.Verify(x => x.Create(It.IsAny<Product>()), Times.Once);
-        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

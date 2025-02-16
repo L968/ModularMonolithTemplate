@@ -1,25 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
-using ModularMonolithTemplate.Common.Domain.Exceptions;
-using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
-using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.DeleteProduct;
+﻿using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.DeleteProduct;
 using ModularMonolithTemplate.Modules.Products.Domain.Products;
-using Moq;
 
 namespace ModularMonolithTemplate.Modules.Products.UnitTests.Application.Products.Commands;
 
-public class DeleteProductTests
+public class DeleteProductTests : IClassFixture<ProductsDbContextFixture>
 {
-    private readonly Mock<IProductRepository> _repositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly ProductsDbContext _dbContext;
     private readonly DeleteProductHandler _handler;
 
-    public DeleteProductTests()
+    public DeleteProductTests(ProductsDbContextFixture fixture)
     {
-        _repositoryMock = new Mock<IProductRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _dbContext = fixture.DbContext;
         var loggerMock = new Mock<ILogger<DeleteProductHandler>>();
 
-        _handler = new DeleteProductHandler(_repositoryMock.Object, _unitOfWorkMock.Object, loggerMock.Object);
+        _handler = new DeleteProductHandler(_dbContext, loggerMock.Object);
     }
 
     [Fact]
@@ -31,33 +25,28 @@ public class DeleteProductTests
             price: 100m
         );
 
-        var command = new DeleteProductCommand(Id: existingProduct.Id);
+        await _dbContext.Products.AddAsync(existingProduct);
+        await _dbContext.SaveChangesAsync();
 
-        _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-                       .ReturnsAsync(existingProduct);
+        var command = new DeleteProductCommand(Id: existingProduct.Id);
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _repositoryMock.Verify(x => x.Delete(existingProduct), Times.Once);
-        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        Product? deletedProduct = await _dbContext.Products.FindAsync(existingProduct.Id);
+        Assert.Null(deletedProduct);
     }
 
     [Fact]
     public async Task WhenProductDoesNotExist_ShouldThrowAppException()
     {
         // Arrange
-        var command = new DeleteProductCommand(Id: Guid.Empty);
-
-        _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-                       .ReturnsAsync((Product?)null);
+        var command = new DeleteProductCommand(Id: Guid.NewGuid());
 
         // Act & Assert
         AppException exception = await Assert.ThrowsAsync<AppException>(() => _handler.Handle(command, CancellationToken.None));
         Assert.Equal(ProductErrors.ProductNotFound(command.Id).Message, exception.Message);
-
-        _repositoryMock.Verify(x => x.Delete(It.IsAny<Product>()), Times.Never);
-        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        Assert.Equal(ErrorType.NotFound, exception.ErrorType);
     }
 }

@@ -1,25 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
-using ModularMonolithTemplate.Common.Domain.Exceptions;
-using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
-using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.UpdateProduct;
+﻿using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.UpdateProduct;
 using ModularMonolithTemplate.Modules.Products.Domain.Products;
-using Moq;
 
 namespace ModularMonolithTemplate.Modules.Products.UnitTests.Application.Products.Commands;
 
-public class UpdateProductTests
+public class UpdateProductTests : IClassFixture<ProductsDbContextFixture>
 {
-    private readonly Mock<IProductRepository> _repositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly ProductsDbContext _dbContext;
     private readonly UpdateProductHandler _handler;
 
-    public UpdateProductTests()
+    public UpdateProductTests(ProductsDbContextFixture fixture)
     {
-        _repositoryMock = new Mock<IProductRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _dbContext = fixture.DbContext;
         var loggerMock = new Mock<ILogger<UpdateProductHandler>>();
 
-        _handler = new UpdateProductHandler(_repositoryMock.Object, _unitOfWorkMock.Object, loggerMock.Object);
+        _handler = new UpdateProductHandler(_dbContext, loggerMock.Object);
     }
 
     [Fact]
@@ -31,6 +25,9 @@ public class UpdateProductTests
             price: 100m
         );
 
+        await _dbContext.Products.AddAsync(existingProduct);
+        await _dbContext.SaveChangesAsync();
+
         var command = new UpdateProductCommand
         {
             Id = existingProduct.Id,
@@ -38,18 +35,14 @@ public class UpdateProductTests
             Price = 150m
         };
 
-        _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-                       .ReturnsAsync(existingProduct);
-
         // Act
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _repositoryMock.Verify(x => x.Update(existingProduct), Times.Once);
-        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-
-        Assert.Equal(command.Name, existingProduct.Name);
-        Assert.Equal(150m, existingProduct.Price);
+        Product? updatedProduct = await _dbContext.Products.FindAsync(existingProduct.Id);
+        Assert.NotNull(updatedProduct);
+        Assert.Equal("Updated Product", updatedProduct.Name);
+        Assert.Equal(150m, updatedProduct.Price);
     }
 
     [Fact]
@@ -58,19 +51,14 @@ public class UpdateProductTests
         // Arrange
         var command = new UpdateProductCommand
         {
-            Id = Guid.Empty,
+            Id = Guid.NewGuid(),
             Name = "Nonexistent Product",
             Price = 100m
         };
 
-        _repositoryMock.Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-                       .ReturnsAsync((Product?)null);
-
         // Act & Assert
         AppException exception = await Assert.ThrowsAsync<AppException>(() => _handler.Handle(command, CancellationToken.None));
         Assert.Equal(ProductErrors.ProductNotFound(command.Id).Message, exception.Message);
-
-        _repositoryMock.Verify(x => x.Update(It.IsAny<Product>()), Times.Never);
-        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        Assert.Equal(ErrorType.NotFound, exception.ErrorType);
     }
 }

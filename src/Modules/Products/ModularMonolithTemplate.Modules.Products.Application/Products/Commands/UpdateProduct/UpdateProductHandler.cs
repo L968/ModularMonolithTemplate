@@ -1,17 +1,15 @@
-﻿using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
-using ModularMonolithTemplate.Modules.Products.Domain.Products;
+﻿using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Products.Commands.UpdateProduct;
 
 internal sealed class UpdateProductHandler(
-    IProductRepository repository,
-    IUnitOfWork unitOfWork,
+    IProductsDbContext dbContext,
     ILogger<UpdateProductHandler> logger
-    ) : IRequestHandler<UpdateProductCommand>
+) : IRequestHandler<UpdateProductCommand>
 {
     public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        Product? product = await repository.GetByIdAsync(request.Id, cancellationToken);
+        Product? product = await dbContext.Products.FindAsync([request.Id], cancellationToken);
 
         if (product is null)
         {
@@ -23,8 +21,7 @@ internal sealed class UpdateProductHandler(
             request.Price
         );
 
-        repository.Update(product);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Successfully updated {@Product}", product);
     }

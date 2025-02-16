@@ -1,44 +1,41 @@
-using Microsoft.Extensions.Logging;
-using ModularMonolithTemplate.Common.Domain.Exceptions;
 using ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProductById;
 using ModularMonolithTemplate.Modules.Products.Domain.Products;
-using Moq;
 
 namespace ModularMonolithTemplate.Modules.Products.UnitTests.Application.Products.Queries;
 
-public class GetProductByIdTests
+public class GetProductByIdTests : IClassFixture<ProductsDbContextFixture>
 {
-    private readonly Mock<IProductRepository> _repositoryMock;
+    private readonly ProductsDbContext _dbContext;
     private readonly GetProductByIdHandler _handler;
 
-    public GetProductByIdTests()
+    public GetProductByIdTests(ProductsDbContextFixture fixture)
     {
-        _repositoryMock = new Mock<IProductRepository>();
+        _dbContext = fixture.DbContext;
         var loggerMock = new Mock<ILogger<GetProductByIdHandler>>();
 
-        _handler = new GetProductByIdHandler(_repositoryMock.Object, loggerMock.Object);
+        _handler = new GetProductByIdHandler(_dbContext, loggerMock.Object);
     }
 
     [Fact]
     public async Task WhenProductExists_ShouldReturnProduct()
     {
         // Arrange
-        var investmentProduct = new Product(
+        var existingProduct = new Product(
             name: "Test Product",
             price: 100m
         );
 
-        _repositoryMock.Setup(x => x.GetByIdAsync(investmentProduct.Id, It.IsAny<CancellationToken>()))
-                       .ReturnsAsync(investmentProduct);
+        await _dbContext.Products.AddAsync(existingProduct);
+        await _dbContext.SaveChangesAsync();
 
-        var query = new GetProductByIdQuery(Id: investmentProduct.Id);
+        var query = new GetProductByIdQuery(Id: existingProduct.Id);
 
         // Act
         GetProductByIdResponse result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(investmentProduct.Id, result.Id);
+        Assert.Equal(existingProduct.Id, result.Id);
         Assert.Equal("Test Product", result.Name);
         Assert.Equal(100m, result.Price);
     }
@@ -47,13 +44,11 @@ public class GetProductByIdTests
     public async Task WhenProductDoesNotExist_ShouldThrowAppException()
     {
         // Arrange
-        var query = new GetProductByIdQuery(Id: Guid.Empty);
-
-        _repositoryMock.Setup(x => x.GetByIdAsync(Guid.Empty, It.IsAny<CancellationToken>()))
-                       .ReturnsAsync((Product?)null);
+        var query = new GetProductByIdQuery(Id: Guid.NewGuid());
 
         // Act & Assert
         AppException exception = await Assert.ThrowsAsync<AppException>(() => _handler.Handle(query, CancellationToken.None));
         Assert.Equal(ProductErrors.ProductNotFound(query.Id).Message, exception.Message);
+        Assert.Equal(ErrorType.NotFound, exception.ErrorType);
     }
 }
