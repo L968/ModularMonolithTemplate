@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModularMonolithTemplate.Common.Infrastructure.Extensions;
+using ModularMonolithTemplate.Common.Infrastructure.Interceptors;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
 using ModularMonolithTemplate.Modules.Products.Application.Abstractions;
 using ModularMonolithTemplate.Modules.Products.Infrastructure.Database;
@@ -25,13 +26,14 @@ public static class ProductsModule
 
         var serverVersion = ServerVersion.AutoDetect(connectionString);
 
-        services.AddDbContext<ProductsDbContext>(options =>
+        services.AddDbContext<ProductsDbContext>((serviceProvider, options) =>
             options
                 .UseMySql(
                     connectionString,
                     serverVersion,
                     mysqlOptions => mysqlOptions.MigrationsAssembly(typeof(ProductsDbContext).Assembly.FullName)
                 )
+                .AddInterceptors(serviceProvider.GetRequiredService<PublishDomainEventsInterceptor>())
         );
 
         services.AddScoped<IProductsDbContext>(sp => sp.GetRequiredService<ProductsDbContext>());

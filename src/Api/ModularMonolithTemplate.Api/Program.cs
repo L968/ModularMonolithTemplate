@@ -3,6 +3,7 @@ using ModularMonolithTemplate.Api.Extensions;
 using ModularMonolithTemplate.Api.Middleware;
 using ModularMonolithTemplate.Aspire.ServiceDefaults;
 using ModularMonolithTemplate.Common.Application;
+using ModularMonolithTemplate.Common.Infrastructure;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
 using ModularMonolithTemplate.Modules.Products.Infrastructure;
 using Serilog;
@@ -18,6 +19,8 @@ Assembly[] moduleApplicationAssemblies = [
 ];
 
 builder.Services.AddApplication(moduleApplicationAssemblies);
+
+builder.Services.AddInfrastructure();
 
 builder.Services.AddProductsModule(builder.Configuration);
 

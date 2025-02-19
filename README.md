@@ -66,6 +66,17 @@ To run unit tests, execute:
  dotnet test
 ```
 
+### 4. Adding Migrations
+
+1. Set "YourProjectName.Api" as your start up project.
+2. Open the Package Manager Console.
+3. Set the default project to "YourProjectName.Modules.YourModule.Infrastructure".
+4. Run the following command.
+
+```bash
+Add-Migration Init -Context YourModuleDbContext -o Database/Migrations
+```
+
 ## API Endpoints  
 Once the application is running, you can access the API via Scalar in the **YourProjectName.Api** project from the .NET Aspire dashboard.  
 

@@ -12,7 +12,7 @@ using ModularMonolithTemplate.Modules.Products.Infrastructure.Database;
 namespace ModularMonolithTemplate.Modules.Products.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ProductsDbContext))]
-    [Migration("20241017002858_Init")]
+    [Migration("20250219154252_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace ModularMonolithTemplate.Modules.Products.Infrastructure.Database.Migra
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
