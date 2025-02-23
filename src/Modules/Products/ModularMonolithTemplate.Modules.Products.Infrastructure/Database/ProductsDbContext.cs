@@ -11,6 +11,8 @@ public sealed class ProductsDbContext(DbContextOptions<ProductsDbContext> option
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(Schemas.Product);
+
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
     }
 
