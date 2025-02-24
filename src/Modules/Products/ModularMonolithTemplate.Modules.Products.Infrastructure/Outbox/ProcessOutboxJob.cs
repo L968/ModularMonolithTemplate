@@ -25,10 +25,14 @@ internal sealed class ProcessOutboxJob(
     {
         logger.LogInformation("{Module} - Beginning to process outbox messages", ModuleName);
 
-        IReadOnlyList<OutboxMessage> outboxMessages = await GetUnprocessedOutboxMessagesAsync();
+        List<OutboxMessage> outboxMessages = await GetUnprocessedOutboxMessagesAsync();
+
+        logger.LogInformation("{Module} - Found {Count} unprocessed messages", ModuleName, outboxMessages.Count);
 
         foreach (OutboxMessage outboxMessage in outboxMessages)
         {
+            logger.LogInformation("{Module} - Processing outbox message {MessageId}", ModuleName, outboxMessage.Id);
+
             Exception? exception = null;
 
             try
@@ -42,6 +46,7 @@ internal sealed class ProcessOutboxJob(
                 IPublisher publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
                 await publisher.Publish(domainEvent);
+                logger.LogInformation("{Module} - Successfully processed message {MessageId}", ModuleName, outboxMessage.Id);
             }
             catch (Exception caughtException)
             {
