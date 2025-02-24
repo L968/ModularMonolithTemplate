@@ -33,7 +33,6 @@ public static class ProductsModule
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Products)
                 )
-                .UseSnakeCaseNamingConvention()
                 .AddInterceptors(serviceProvider.GetRequiredService<InsertOutboxMessagesInterceptor>())
         );
 
