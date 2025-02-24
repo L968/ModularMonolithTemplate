@@ -10,7 +10,7 @@ builder.Services.AddHostedService<Worker>();
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
 
-builder.AddMySqlDbContext<ProductsDbContext>("modularmonolithtemplate-mysqldb");
+builder.AddNpgsqlDbContext<ProductsDbContext>("modularmonolithtemplate-postgresdb");
 
 IHost host = builder.Build();
 await host.RunAsync();

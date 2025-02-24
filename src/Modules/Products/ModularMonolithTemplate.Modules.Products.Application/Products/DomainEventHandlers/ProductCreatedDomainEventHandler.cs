@@ -7,6 +7,6 @@ internal class ProductCreatedDomainEventHandler : IDomainEventHandler<ProductCre
 {
     public Task Handle(ProductCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }

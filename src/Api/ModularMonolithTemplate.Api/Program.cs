@@ -22,6 +22,8 @@ builder.Services.AddApplication(moduleApplicationAssemblies);
 
 builder.Services.AddInfrastructure();
 
+builder.Configuration.AddModuleConfiguration(["products"]);
+
 builder.Services.AddProductsModule(builder.Configuration);
 
 builder.Services.AddOpenApi();

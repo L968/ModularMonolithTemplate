@@ -6,7 +6,7 @@ This repository provides a template for creating .NET projects using **Modular M
 
 - [Modular Monolith Architecture](https://www.milanjovanovic.tech/blog/what-is-a-modular-monolith) Structure your project by feature, making it easier to maintain and scale.
 - [.NET Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/): Pre-configured for containerization, enabling you to run the entire project with one command.
-- [MySQL](https://www.mysql.com/): The template uses MySQL as the default database, with easy setup via Docker.
+- [PostgreSQL](https://www.postgresql.org/): The template uses PostgreSQL as the default database, with easy setup via .NET Aspire.
 - [Entity Framework](https://docs.microsoft.com/en-us/ef/core/): Simplifies database management with EF Core, enabling you to apply and manage migrations effortlessly.
 - [Health Checks](https://www.nuget.org/packages/AspNetCore.HealthChecks.UI.Client): Integrated health checks for monitoring the application’s health.
 - [FluentValidation](https://fluentvalidation.net/): Provides a clean and expressive way to validate models.
