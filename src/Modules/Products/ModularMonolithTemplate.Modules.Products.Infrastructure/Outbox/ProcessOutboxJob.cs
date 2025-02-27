@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ModularMonolithTemplate.Common.Application.Messaging;
 using ModularMonolithTemplate.Common.Domain.DomainEvents;
 using ModularMonolithTemplate.Common.Infrastructure.Outbox;
 using ModularMonolithTemplate.Common.Infrastructure.Serialization;
@@ -33,8 +34,6 @@ internal sealed class ProcessOutboxJob(
         {
             logger.LogInformation("{Module} - Processing outbox message {MessageId}", ModuleName, outboxMessage.Id);
 
-            Exception? exception = null;
-
             try
             {
                 IDomainEvent domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
@@ -43,24 +42,30 @@ internal sealed class ProcessOutboxJob(
 
                 using IServiceScope scope = serviceScopeFactory.CreateScope();
 
-                IPublisher publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
+                IEnumerable<IDomainEventHandler> domainEventHandlers = DomainEventHandlersFactory.GetHandlers(
+                    domainEvent.GetType(),
+                    scope.ServiceProvider,
+                    Application.AssemblyReference.Assembly);
 
-                await publisher.Publish(domainEvent);
+                foreach (IDomainEventHandler domainEventHandler in domainEventHandlers)
+                {
+                    await domainEventHandler.Handle(domainEvent);
+                }
+
+                outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
+
                 logger.LogInformation("{Module} - Successfully processed message {MessageId}", ModuleName, outboxMessage.Id);
             }
-            catch (Exception caughtException)
+            catch (Exception exception)
             {
                 logger.LogError(
-                    caughtException,
+                    exception,
                     "{Module} - Exception while processing outbox message {MessageId}",
                     ModuleName,
                     outboxMessage.Id);
 
-                exception = caughtException;
+                outboxMessage.Error = exception.ToString();
             }
-
-            outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
-            outboxMessage.Error = exception?.ToString();
         }
 
         await dbContext.SaveChangesAsync();

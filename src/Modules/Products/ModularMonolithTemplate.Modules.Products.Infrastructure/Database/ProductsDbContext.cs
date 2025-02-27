@@ -12,12 +12,14 @@ public sealed class ProductsDbContext(DbContextOptions<ProductsDbContext> option
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    public DbSet<OutboxMessageConsumer> OutboxMessageConsumers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schemas.Products);
 
         modelBuilder.ApplyConfiguration(new OutboxMessageConfiguration());
+        modelBuilder.ApplyConfiguration(new OutboxMessageConsumerConfiguration());
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
     }
 
@@ -29,12 +31,11 @@ public sealed class ProductsDbContext(DbContextOptions<ProductsDbContext> option
 
     private void ApplyAuditInfo()
     {
+        DateTime utcNow = DateTime.UtcNow;
         IEnumerable<EntityEntry<IAuditableEntity>> entries = ChangeTracker.Entries<IAuditableEntity>();
 
         foreach (EntityEntry<IAuditableEntity> entry in entries)
         {
-            DateTime utcNow = DateTime.UtcNow;
-
             if (entry.State == EntityState.Added)
             {
                 entry.Property(e => e.CreatedAtUtc).CurrentValue = utcNow;

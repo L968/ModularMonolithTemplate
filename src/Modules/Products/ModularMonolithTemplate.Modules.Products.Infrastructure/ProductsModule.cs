@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using ModularMonolithTemplate.Common.Application.Messaging;
+using ModularMonolithTemplate.Common.Infrastructure;
 using ModularMonolithTemplate.Common.Infrastructure.Extensions;
 using ModularMonolithTemplate.Common.Infrastructure.Outbox;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
@@ -16,6 +19,8 @@ public static class ProductsModule
     public static IServiceCollection AddProductsModule(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddInfrastructure(configuration);
+
+        services.AddDomainEventHandlers();
 
         services.AddEndpoints(Presentation.AssemblyReference.Assembly);
 
@@ -40,5 +45,28 @@ public static class ProductsModule
 
         services.Configure<OutboxOptions>(configuration.GetSection("Products:Outbox"));
         services.ConfigureOptions<ConfigureProcessOutboxJob>();
+    }
+
+    private static void AddDomainEventHandlers(this IServiceCollection services)
+    {
+        Type[] domainEventHandlers = Application.AssemblyReference.Assembly
+            .GetTypes()
+            .Where(t => t.IsAssignableTo(typeof(IDomainEventHandler)))
+            .ToArray();
+
+        foreach (Type domainEventHandler in domainEventHandlers)
+        {
+            services.TryAddScoped(domainEventHandler);
+
+            Type domainEvent = domainEventHandler
+                .GetInterfaces()
+                .Single(i => i.IsGenericType)
+                .GetGenericArguments()
+                .Single();
+
+            Type closedIdempotentHandler = typeof(IdempotentDomainEventHandler<>).MakeGenericType(domainEvent);
+
+            services.Decorate(domainEventHandler, closedIdempotentHandler);
+        }
     }
 }

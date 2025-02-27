@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using ModularMonolithTemplate.Common.Application.Messaging;
 using ModularMonolithTemplate.Modules.Products.ArchitectureTests.Abstractions;
 using NetArchTest.Rules;
 
@@ -111,6 +112,48 @@ public class ApplicationTests : BaseTest
             .Inherit(typeof(AbstractValidator<>))
             .Should()
             .HaveNameEndingWith("Validator")
+            .GetResult()
+            .ShouldBeSuccessful();
+    }
+
+    [Fact]
+    public void DomainEventHandler_Should_NotBePublic()
+    {
+        Types.InAssembly(ApplicationAssembly)
+            .That()
+            .ImplementInterface(typeof(IDomainEventHandler<>))
+            .Or()
+            .Inherit(typeof(DomainEventHandler<>))
+            .Should()
+            .NotBePublic()
+            .GetResult()
+            .ShouldBeSuccessful();
+    }
+
+    [Fact]
+    public void DomainEventHandler_Should_BeSealed()
+    {
+        Types.InAssembly(ApplicationAssembly)
+            .That()
+            .ImplementInterface(typeof(IDomainEventHandler<>))
+            .Or()
+            .Inherit(typeof(DomainEventHandler<>))
+            .Should()
+            .BeSealed()
+            .GetResult()
+            .ShouldBeSuccessful();
+    }
+
+    [Fact]
+    public void DomainEventHandler_ShouldHave_NameEndingWith_DomainEventHandler()
+    {
+        Types.InAssembly(ApplicationAssembly)
+            .That()
+            .ImplementInterface(typeof(IDomainEventHandler<>))
+            .Or()
+            .Inherit(typeof(DomainEventHandler<>))
+            .Should()
+            .HaveNameEndingWith("DomainEventHandler")
             .GetResult()
             .ShouldBeSuccessful();
     }
