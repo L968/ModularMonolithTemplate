@@ -24,7 +24,7 @@ public static class ProductsModule
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        string dbConnectionString = configuration.GetConnectionStringOrThrow("modularmonolithtemplate-postgresdb");
+        string dbConnectionString = configuration.GetConnectionStringOrThrow(ServiceNames.PostgresDb);
 
         services.AddDbContext<ProductsDbContext>((serviceProvider, options) =>
             options
