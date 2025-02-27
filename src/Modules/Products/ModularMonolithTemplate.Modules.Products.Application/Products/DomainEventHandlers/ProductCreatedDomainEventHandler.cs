@@ -3,7 +3,7 @@ using ModularMonolithTemplate.Modules.Products.Domain.Products.DomainEvents;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Products.DomainEventHandlers;
 
-internal class ProductCreatedDomainEventHandler : DomainEventHandler<ProductCreatedDomainEvent>
+internal sealed class ProductCreatedDomainEventHandler : DomainEventHandler<ProductCreatedDomainEvent>
 {
     public override Task Handle(ProductCreatedDomainEvent notification, CancellationToken cancellationToken = default)
     {
