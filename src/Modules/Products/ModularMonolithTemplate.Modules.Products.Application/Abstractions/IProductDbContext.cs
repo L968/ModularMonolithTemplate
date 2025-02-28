@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ModularMonolithTemplate.Modules.Products.Domain.Products;
+﻿using ModularMonolithTemplate.Modules.Products.Domain.Products;
 
 namespace ModularMonolithTemplate.Modules.Products.Application.Abstractions;
 

@@ -36,4 +36,3 @@ public sealed class ProductsDbContextFixture : IDisposable
         _dbContext.Dispose();
     }
 }
-
