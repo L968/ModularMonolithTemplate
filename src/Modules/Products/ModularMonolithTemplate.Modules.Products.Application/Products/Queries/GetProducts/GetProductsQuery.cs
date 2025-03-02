@@ -1,3 +1,5 @@
-﻿namespace ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProducts;
+﻿using ModularMonolithTemplate.Common.Application;
 
-public sealed record GetProductsQuery : IRequest<IEnumerable<GetProductsResponse>>;
+namespace ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProducts;
+
+public sealed record GetProductsQuery(int Page, int PageSize) : IRequest<PaginatedList<GetProductsResponse>>;

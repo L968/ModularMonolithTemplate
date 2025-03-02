@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using Bogus;
+using ModularMonolithTemplate.Common.Application;
 
 namespace ModularMonolithTemplate.Modules.Products.IntegrationTests;
 
@@ -15,10 +16,27 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
     }
 
     [Fact]
-    public async Task GetProducts_WhenCalled_ShouldReturnOk()
+    public async Task GetProducts_WhenCalled_ShouldReturnOkWithPaginatedList()
     {
-        HttpResponseMessage response = await _httpClient.GetAsync("/products");
+        // Arrange
+        const int expectedPage = 1;
+        const int expectedPageSize = 10;
+
+        // Act
+        HttpResponseMessage response = await _httpClient.GetAsync($"/products?page={expectedPage}&pageSize={expectedPageSize}");
+
+        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        PaginatedList<GetProductsResponse>? paginatedResponse = await response.Content.ReadFromJsonAsync<PaginatedList<GetProductsResponse>>();
+
+        Assert.NotNull(paginatedResponse);
+        Assert.Equal(expectedPage, paginatedResponse.Page);
+        Assert.Equal(expectedPageSize, paginatedResponse.PageSize);
+        Assert.True(paginatedResponse.TotalItems >= 0);
+        Assert.True(paginatedResponse.TotalPages >= 0);
+        Assert.NotNull(paginatedResponse.Items);
+        Assert.All(paginatedResponse.Items, Assert.NotNull);
     }
 
     [Fact]
@@ -119,7 +137,12 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
     }
 }
 
-internal sealed class CreatedProductResponse
-{
-    public string Id { get; set; }
-}
+internal sealed record CreatedProductResponse(
+    string Id
+);
+
+internal sealed record GetProductsResponse(
+    Guid Id,
+    string Name,
+    decimal Price
+);
