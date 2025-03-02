@@ -1,6 +1,6 @@
 ﻿using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.UpdateProduct;
 
-namespace ModularMonolithTemplate.Modules.Products.Presentation.Products;
+namespace ModularMonolithTemplate.Modules.Products.Presentation.Products.v1;
 
 internal sealed class UpdateProductEndpoint : IEndpoint
 {
@@ -13,6 +13,7 @@ internal sealed class UpdateProductEndpoint : IEndpoint
 
             return Results.NoContent();
         })
-        .WithTags(Tags.Products);
+        .WithTags(Tags.Products)
+        .MapToApiVersion(1);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.DeleteProduct;
 
-namespace ModularMonolithTemplate.Modules.Products.Presentation.Products;
+namespace ModularMonolithTemplate.Modules.Products.Presentation.Products.v1;
 
 internal sealed class DeleteProductEndpoint : IEndpoint
 {
@@ -11,6 +11,7 @@ internal sealed class DeleteProductEndpoint : IEndpoint
             await sender.Send(new DeleteProductCommand(id));
             return Results.NoContent();
         })
-        .WithTags(Tags.Products);
+        .WithTags(Tags.Products)
+        .MapToApiVersion(1);
     }
 }

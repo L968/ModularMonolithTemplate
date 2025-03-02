@@ -1,6 +1,6 @@
 ﻿using ModularMonolithTemplate.Modules.Products.Application.Products.Commands.CreateProduct;
 
-namespace ModularMonolithTemplate.Modules.Products.Presentation.Products;
+namespace ModularMonolithTemplate.Modules.Products.Presentation.Products.v1;
 
 internal sealed class CreateProductEndpoint : IEndpoint
 {
@@ -12,6 +12,7 @@ internal sealed class CreateProductEndpoint : IEndpoint
 
             return Results.Created($"/products/{response.Id}", response);
         })
-        .WithTags(Tags.Products);
+        .WithTags(Tags.Products)
+        .MapToApiVersion(1);
     }
 }

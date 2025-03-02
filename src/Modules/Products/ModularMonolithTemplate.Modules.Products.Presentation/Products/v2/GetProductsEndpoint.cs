@@ -2,7 +2,7 @@
 using ModularMonolithTemplate.Common.Application;
 using ModularMonolithTemplate.Modules.Products.Application.Products.Queries.GetProducts;
 
-namespace ModularMonolithTemplate.Modules.Products.Presentation.Products;
+namespace ModularMonolithTemplate.Modules.Products.Presentation.Products.v2;
 
 internal sealed class GetProductsEndpoint : IEndpoint
 {
@@ -19,6 +19,7 @@ internal sealed class GetProductsEndpoint : IEndpoint
 
                 return Results.Ok(response);
             })
-            .WithTags(Tags.Products);
+            .WithTags(Tags.Products)
+            .MapToApiVersion(2);
     }
 }
