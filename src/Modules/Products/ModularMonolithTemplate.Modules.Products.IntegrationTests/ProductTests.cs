@@ -8,6 +8,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
 {
     private readonly HttpClient _httpClient;
     private readonly Faker _faker;
+    private const string ApiVersion = "v1";
 
     public ProductTests(ModularMonolithTemplateApiFixture fixture)
     {
@@ -23,7 +24,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
         const int expectedPageSize = 10;
 
         // Act
-        HttpResponseMessage response = await _httpClient.GetAsync($"/products?page={expectedPage}&pageSize={expectedPageSize}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"/{ApiVersion}/products?page={expectedPage}&pageSize={expectedPageSize}");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -48,10 +49,10 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
             price = _faker.Random.Decimal(1, 100)
         };
 
-        HttpResponseMessage createResponse = await _httpClient.PostAsJsonAsync("/product", createProductCommand);
+        HttpResponseMessage createResponse = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/product", createProductCommand);
         CreatedProductResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<CreatedProductResponse>();
 
-        HttpResponseMessage response = await _httpClient.GetAsync($"/product/{createdProduct!.Id}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"/{ApiVersion}/product/{createdProduct!.Id}");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
@@ -59,7 +60,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
     public async Task GetProductById_WhenProductDoesNotExist_ShouldReturnNotFound()
     {
         string nonExistentProductId = Guid.NewGuid().ToString();
-        HttpResponseMessage response = await _httpClient.GetAsync($"/product/{nonExistentProductId}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"/{ApiVersion}/product/{nonExistentProductId}");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
@@ -72,7 +73,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
             price = _faker.Random.Decimal(1, 100)
         };
 
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/product", createProductCommand);
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/product", createProductCommand);
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
 
@@ -85,7 +86,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
             price = _faker.Random.Decimal(1, 100)
         };
 
-        HttpResponseMessage createResponse = await _httpClient.PostAsJsonAsync("/product", createProductCommand);
+        HttpResponseMessage createResponse = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/product", createProductCommand);
         CreatedProductResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<CreatedProductResponse>();
 
         var updateProductCommand = new
@@ -94,7 +95,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
             price = _faker.Random.Decimal(1, 100)
         };
 
-        HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/product/{createdProduct!.Id}", updateProductCommand);
+        HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/{ApiVersion}/product/{createdProduct!.Id}", updateProductCommand);
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 
@@ -108,7 +109,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
             price = _faker.Random.Decimal(1, 100)
         };
 
-        HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/product/{nonExistentProductId}", updateProductCommand);
+        HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"/{ApiVersion}/product/{nonExistentProductId}", updateProductCommand);
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
@@ -121,10 +122,10 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
             price = _faker.Random.Decimal(1, 100)
         };
 
-        HttpResponseMessage createResponse = await _httpClient.PostAsJsonAsync("/product", createProductCommand);
+        HttpResponseMessage createResponse = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/product", createProductCommand);
         CreatedProductResponse createdProduct = await createResponse.Content.ReadFromJsonAsync<CreatedProductResponse>();
 
-        HttpResponseMessage response = await _httpClient.DeleteAsync($"/product/{createdProduct!.Id}");
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"/{ApiVersion}/product/{createdProduct!.Id}");
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 
@@ -132,7 +133,7 @@ public class ProductTests : IClassFixture<ModularMonolithTemplateApiFixture>
     public async Task DeleteProduct_WhenProductDoesNotExist_ShouldReturnNotFound()
     {
         string nonExistentProductId = Guid.NewGuid().ToString();
-        HttpResponseMessage response = await _httpClient.DeleteAsync($"/product/{nonExistentProductId}");
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"/{ApiVersion}/product/{nonExistentProductId}");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }
