@@ -26,6 +26,8 @@ builder.Configuration.AddModuleConfiguration(["products"]);
 
 builder.Services.AddProductsModule(builder.Configuration);
 
+builder.Services.AddHealthChecksConfiguration(builder.Configuration);
+
 builder.Services.AddOpenApi();
 
 builder.Host.AddSerilogLogging();
