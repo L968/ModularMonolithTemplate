@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\aspire\ModularMonolithTemplate.Aspire\ModularMonolithTemplate.Aspire.ServiceDefaults\ModularMonolithTemplate.Aspire.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\..\Common\ModularMonolithTemplate.Common.Application\ModularMonolithTemplate.Common.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Products\ModularMonolithTemplate.Modules.Products.Infrastructure\ModularMonolithTemplate.Modules.Products.Infrastructure.csproj" />
   </ItemGroup>
 
