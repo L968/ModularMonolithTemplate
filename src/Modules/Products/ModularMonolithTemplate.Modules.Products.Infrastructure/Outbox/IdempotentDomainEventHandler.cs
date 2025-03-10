@@ -24,6 +24,7 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
         await decorated.Handle(domainEvent, cancellationToken);
 
         dbContext.OutboxMessageConsumers.Add(outboxMessageConsumer);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task<bool> OutboxConsumerExistsAsync(OutboxMessageConsumer outboxMessageConsumer)
