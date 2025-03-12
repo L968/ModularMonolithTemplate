@@ -55,7 +55,11 @@ internal sealed class ProcessOutboxJob(
                 outboxMessage.Error = "";
                 outboxMessage.ProcessedOnUtc = DateTime.UtcNow;
 
-                logger.LogInformation("{Module} - Successfully processed message {MessageId}", ModuleName, outboxMessage.Id);
+                logger.LogInformation("{Module} - Successfully processed message {MessageId} - {EventName}",
+                    ModuleName,
+                    outboxMessage.Id,
+                    domainEvent.GetType().Name
+                );
             }
             catch (Exception exception)
             {
