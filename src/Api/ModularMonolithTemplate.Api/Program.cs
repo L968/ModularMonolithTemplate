@@ -1,12 +1,13 @@
-using System.Reflection;
+﻿using System.Reflection;
+using Serilog;
 using ModularMonolithTemplate.Api.Extensions;
 using ModularMonolithTemplate.Api.Middleware;
 using ModularMonolithTemplate.Aspire.ServiceDefaults;
 using ModularMonolithTemplate.Common.Application;
 using ModularMonolithTemplate.Common.Infrastructure;
+using ModularMonolithTemplate.Common.Infrastructure.Extensions;
 using ModularMonolithTemplate.Common.Presentation.Endpoints;
-using ModularMonolithTemplate.Modules.Products.Infrastructure;
-using Serilog;
+using ModularMonolithTemplate.Modules.Orders.Infrastructure;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -15,16 +16,18 @@ builder.AddServiceDefaults();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 Assembly[] moduleApplicationAssemblies = [
-    ModularMonolithTemplate.Modules.Products.Application.AssemblyReference.Assembly,
+    ModularMonolithTemplate.Modules.Orders.Application.AssemblyReference.Assembly
 ];
 
 builder.Services.AddApplication(moduleApplicationAssemblies);
 
-builder.Services.AddInfrastructure();
+string redisConnectionString = builder.Configuration.GetConnectionStringOrThrow(ServiceNames.Redis);
 
-builder.Configuration.AddModuleConfiguration(["products"]);
+builder.Services.AddInfrastructure(redisConnectionString);
 
-builder.Services.AddProductsModule(builder.Configuration);
+builder.Configuration.AddModuleConfiguration(["orders"]);
+
+builder.Services.AddOrdersModule(builder.Configuration);
 
 builder.Services.AddHealthChecksConfiguration(builder.Configuration);
 

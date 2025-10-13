@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <ItemGroup>
+	<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.5.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\aspire\ModularMonolithTemplate.Aspire\ModularMonolithTemplate.Aspire.ServiceDefaults\ModularMonolithTemplate.Aspire.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\Modules\Orders\ModularMonolithTemplate.Modules.Orders.Infrastructure\ModularMonolithTemplate.Modules.Orders.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

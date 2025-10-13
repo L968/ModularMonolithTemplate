@@ -59,7 +59,7 @@ csharp_prefer_braces = true:error
 csharp_style_namespace_declarations = file_scoped:error
 csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_prefer_top_level_statements = true:silent
-csharp_style_prefer_primary_constructors = true:none
+csharp_style_prefer_primary_constructors = true:suggestion
 csharp_style_expression_bodied_methods = false:silent
 csharp_style_expression_bodied_constructors = false:silent
 csharp_style_expression_bodied_operators = true:error
@@ -273,6 +273,9 @@ dotnet_diagnostic.CA1307.severity = none
 # CA1308: Normalize strings to uppercase
 dotnet_diagnostic.CA1308.severity = none
 
+# CA1507: Use nameof in place of string literal
+dotnet_diagnostic.CA1507.severity = warning
+
 # CA1515: Consider making public types internal
 dotnet_diagnostic.CA1515.severity = none
 
@@ -357,7 +360,7 @@ dotnet_diagnostic.IDE0053.severity = none
 dotnet_diagnostic.IDE0270.severity = none
 
 # IDE0290: Use primary constructor
-dotnet_diagnostic.IDE0290.severity = none
+dotnet_diagnostic.IDE0290.severity = suggestion
 
 # SonarAnalyzer.CSharp rules
 

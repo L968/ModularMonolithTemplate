@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using ModularMonolithTemplate.Common.Application.Behaviors;
@@ -18,6 +19,7 @@ public static class ApplicationConfiguration
         });
 
         services.AddValidatorsFromAssemblies(moduleAssemblies, includeInternalTypes: true);
+        ValidatorOptions.Global.LanguageManager.Culture = CultureInfo.InvariantCulture;
 
         return services;
     }

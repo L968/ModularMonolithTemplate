@@ -1,24 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-	<PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
 	<PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
-	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
+	<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Scalar.AspNetCore" Version="2.0.20" />
-    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+	<PackageReference Include="Scalar.AspNetCore" Version="2.8.10" />
+	<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\aspire\ModularMonolithTemplate.Aspire\ModularMonolithTemplate.Aspire.ServiceDefaults\ModularMonolithTemplate.Aspire.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\..\Modules\Products\ModularMonolithTemplate.Modules.Products.Infrastructure\ModularMonolithTemplate.Modules.Products.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Orders\ModularMonolithTemplate.Modules.Orders.Infrastructure\ModularMonolithTemplate.Modules.Orders.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

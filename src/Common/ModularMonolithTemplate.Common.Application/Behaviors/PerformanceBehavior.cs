@@ -15,7 +15,7 @@ internal sealed class PerformanceBehavior<TRequest, TResponse>(
     {
         _timer.Start();
 
-        TResponse? response = await next();
+        TResponse? response = await next(cancellationToken);
 
         _timer.Stop();
 

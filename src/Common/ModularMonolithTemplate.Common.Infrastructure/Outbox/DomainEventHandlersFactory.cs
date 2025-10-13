@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using ModularMonolithTemplate.Common.Application.Messaging;
+using ModularMonolithTemplate.Common.Application.DomainEvent;
 
 namespace ModularMonolithTemplate.Common.Infrastructure.Outbox;
 
