@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
@@ -10,4 +11,5 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\ModularMonolithTemplate.Common.Domain\ModularMonolithTemplate.Common.Domain.csproj" />
 	</ItemGroup>
+
 </Project>

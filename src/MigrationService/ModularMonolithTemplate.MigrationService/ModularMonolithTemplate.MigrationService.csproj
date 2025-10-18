@@ -9,4 +9,5 @@
     <ProjectReference Include="..\..\..\aspire\ModularMonolithTemplate.Aspire\ModularMonolithTemplate.Aspire.ServiceDefaults\ModularMonolithTemplate.Aspire.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Modules\Orders\ModularMonolithTemplate.Modules.Orders.Infrastructure\ModularMonolithTemplate.Modules.Orders.Infrastructure.csproj" />
   </ItemGroup>
+
 </Project>
