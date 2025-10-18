@@ -8,7 +8,8 @@ internal sealed class GetProductsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("products", async (
+        app.MapGet("products",
+            async (
                 ISender sender,
                 CancellationToken cancellationToken,
                 [FromQuery] int page = 1,
@@ -19,7 +20,7 @@ internal sealed class GetProductsEndpoint : IEndpoint
 
                 return Results.Ok(response);
             })
-            .WithTags(Tags.Products)
-            .MapToApiVersion(1);
+        .WithTags(Tags.Products)
+        .MapToApiVersion(1);
     }
 }
