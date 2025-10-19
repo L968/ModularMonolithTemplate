@@ -4,7 +4,7 @@ using ModularMonolithTemplate.Common.Infrastructure.Extensions;
 using ModularMonolithTemplate.Common.Infrastructure.Outbox;
 using ModularMonolithTemplate.Modules.Orders.Application.Abstractions;
 using ModularMonolithTemplate.Modules.Orders.Domain.Products;
-using ModularMonolithTemplate.Modules.Orders.Infrastructure.Products;
+using ModularMonolithTemplate.Modules.Orders.Infrastructure.Database.Configurations;
 
 namespace ModularMonolithTemplate.Modules.Orders.Infrastructure.Database;
 
