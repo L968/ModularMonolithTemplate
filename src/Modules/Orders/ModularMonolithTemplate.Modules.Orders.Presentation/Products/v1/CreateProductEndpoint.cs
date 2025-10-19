@@ -1,4 +1,4 @@
-﻿using ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.CreateProduct;
+﻿using ModularMonolithTemplate.Modules.Orders.Application.Features.CreateProduct;
 
 namespace ModularMonolithTemplate.Modules.Orders.Presentation.Products.v1;
 

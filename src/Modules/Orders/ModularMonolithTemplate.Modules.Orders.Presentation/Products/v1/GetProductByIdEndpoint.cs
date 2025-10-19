@@ -1,4 +1,4 @@
-﻿using ModularMonolithTemplate.Modules.Orders.Application.Products.Queries.GetProductById;
+﻿using ModularMonolithTemplate.Modules.Orders.Application.Features.GetProductById;
 
 namespace ModularMonolithTemplate.Modules.Orders.Presentation.Products.v1;
 

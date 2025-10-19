@@ -1,4 +1,4 @@
-﻿using ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.DeleteProduct;
+﻿using ModularMonolithTemplate.Modules.Orders.Application.Features.DeleteProduct;
 
 namespace ModularMonolithTemplate.Modules.Orders.Presentation.Products.v1;
 

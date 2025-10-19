@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Queries.GetProductById;
+﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Features.GetProductById;
 
 internal sealed class GetProductByIdValidator : AbstractValidator<GetProductByIdQuery>
 {

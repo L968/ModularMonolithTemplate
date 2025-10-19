@@ -1,7 +1,7 @@
 ﻿using ModularMonolithTemplate.Common.Application.DomainEvent;
 using ModularMonolithTemplate.Modules.Orders.Domain.Products;
 
-namespace ModularMonolithTemplate.Modules.Orders.Application.Products.DomainEventHandlers;
+namespace ModularMonolithTemplate.Modules.Orders.Application.Features.DomainEventHandlers;
 
 internal sealed class ProductUpdatedDomainEventHandler : DomainEventHandler<ProductUpdatedDomainEvent>
 {

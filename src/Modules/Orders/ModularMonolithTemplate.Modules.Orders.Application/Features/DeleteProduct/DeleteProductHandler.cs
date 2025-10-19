@@ -1,7 +1,7 @@
 ﻿using ModularMonolithTemplate.Modules.Orders.Application.Abstractions;
 using ModularMonolithTemplate.Modules.Orders.Domain.Products;
 
-namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.DeleteProduct;
+namespace ModularMonolithTemplate.Modules.Orders.Application.Features.DeleteProduct;
 
 internal sealed class DeleteProductHandler(
     IOrdersDbContext dbContext,

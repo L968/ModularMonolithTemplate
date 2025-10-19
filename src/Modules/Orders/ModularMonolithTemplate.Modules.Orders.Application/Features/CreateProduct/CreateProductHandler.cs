@@ -1,7 +1,7 @@
 ﻿using ModularMonolithTemplate.Modules.Orders.Application.Abstractions;
 using ModularMonolithTemplate.Modules.Orders.Domain.Products;
 
-namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.CreateProduct;
+namespace ModularMonolithTemplate.Modules.Orders.Application.Features.CreateProduct;
 
 internal sealed class CreateProductHandler(
     IOrdersDbContext dbContext,

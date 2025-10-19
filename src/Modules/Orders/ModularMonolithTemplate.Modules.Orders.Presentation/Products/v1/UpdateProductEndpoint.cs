@@ -1,4 +1,4 @@
-﻿using ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.UpdateProduct;
+﻿using ModularMonolithTemplate.Modules.Orders.Application.Features.UpdateProduct;
 
 namespace ModularMonolithTemplate.Modules.Orders.Presentation.Products.v1;
 

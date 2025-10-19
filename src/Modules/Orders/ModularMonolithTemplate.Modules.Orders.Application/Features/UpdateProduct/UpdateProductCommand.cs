@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.UpdateProduct;
+﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Features.UpdateProduct;
 
 public sealed record UpdateProductCommand(
     Guid Id,

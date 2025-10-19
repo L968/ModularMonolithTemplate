@@ -1,7 +1,7 @@
 ﻿using ModularMonolithTemplate.Modules.Orders.Application.Abstractions;
 using ModularMonolithTemplate.Modules.Orders.Domain.Products;
 
-namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.UpdateProduct;
+namespace ModularMonolithTemplate.Modules.Orders.Application.Features.UpdateProduct;
 
 internal sealed class UpdateProductHandler(
     IOrdersDbContext dbContext,

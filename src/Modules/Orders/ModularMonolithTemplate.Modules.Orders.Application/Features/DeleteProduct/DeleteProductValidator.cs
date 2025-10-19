@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.DeleteProduct;
+﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Features.DeleteProduct;
 
 internal sealed class DeleteProductValidator : AbstractValidator<DeleteProductCommand>
 {

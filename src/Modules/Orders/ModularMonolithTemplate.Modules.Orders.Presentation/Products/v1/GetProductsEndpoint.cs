@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModularMonolithTemplate.Common.Application;
-using ModularMonolithTemplate.Modules.Orders.Application.Products.Queries.GetProducts;
+using ModularMonolithTemplate.Modules.Orders.Application.Features.GetProducts;
 
 namespace ModularMonolithTemplate.Modules.Orders.Presentation.Products.v1;
 

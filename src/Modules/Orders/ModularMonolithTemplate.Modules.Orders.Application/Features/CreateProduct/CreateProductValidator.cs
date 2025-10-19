@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.CreateProduct;
+﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Features.CreateProduct;
 
 internal sealed class CreateProductValidator : AbstractValidator<CreateProductCommand>
 {

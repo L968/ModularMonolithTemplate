@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Queries.GetProducts;
+﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Features.GetProducts;
 
 public sealed record GetProductsResponse(
     Guid Id,

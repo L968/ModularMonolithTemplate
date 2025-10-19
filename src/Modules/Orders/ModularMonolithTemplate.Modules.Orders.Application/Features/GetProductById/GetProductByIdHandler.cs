@@ -1,7 +1,7 @@
 ﻿using ModularMonolithTemplate.Modules.Orders.Application.Abstractions;
 using ModularMonolithTemplate.Modules.Orders.Domain.Products;
 
-namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Queries.GetProductById;
+namespace ModularMonolithTemplate.Modules.Orders.Application.Features.GetProductById;
 
 internal sealed class GetProductByIdHandler(
     IOrdersDbContext dbContext,

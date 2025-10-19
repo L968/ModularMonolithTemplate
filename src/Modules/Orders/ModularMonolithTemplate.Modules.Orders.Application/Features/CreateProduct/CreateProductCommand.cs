@@ -1,4 +1,4 @@
-﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Products.Commands.CreateProduct;
+﻿namespace ModularMonolithTemplate.Modules.Orders.Application.Features.CreateProduct;
 
 public sealed record CreateProductCommand(
     string Name,
